@@ -1,15 +1,18 @@
 
 import tensorflow.keras as keras
 import tensorflow as tf
+from . import loss
 
-class TrainUtils(keras.layers):
+# class TrainUtils(keras.layers):
     
     
-class Train():
-    @classmethod
-    def train_step():
-        with tf.GradientTape() as tape:
-            loss = custom_loss()
-        trainable_variables=list(weights.values())+list(biases.values())
-        gradients = tape.gradient(loss, trainable_variables)
-        optimizer.apply_gradients(zip(gradients, trainable_variables))
+class Train(object):
+    def __init__(self, opt='SGD'):
+        loss = loss.LossODE()
+        pass
+    # def train_step(self):
+    #     with tf.GradientTape() as tape:
+    #         loss = custom_loss()
+    #     trainable_variables=list(weights.values())+list(biases.values())
+    #     gradients = tape.gradient(loss, trainable_variables)
+    #     optimizer.apply_gradients(zip(gradients, trainable_variables))

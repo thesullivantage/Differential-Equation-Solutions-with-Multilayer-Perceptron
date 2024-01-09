@@ -8,7 +8,7 @@ import numpy as np
 Notes: Vectorize Everything (Numpy)
 '''
 
-class LossODE(keras.layers):
+class LossODE(object):
     
     def __init__(self):
         self.dell = np.sqrt(np.finfo(np.float32).eps)
@@ -31,13 +31,17 @@ class LossODE(keras.layers):
     def ode_analy(self, inputs, funcKey = 'place_h'):
         '''
         Evaluate analytical function based on funcKey
-        Probably a better way to do this
+        MARK DEV: Probably a better way to do this: cls.dict_of_functs
         '''
         if funcKey == 'place_h':
             return 2*(inputs)
     
-    def custom_loss(self):
-        for x in np.linspace(-1,1,10):
+    def custom_loss(self, inputs):
+        '''
+        MARK DEV: need this for 2d funcs via vectorized (tensorized) TF logic
+        '''
+        for x in inputs:
+        # for x in np.linspace(-1,1,10):
             dNN = (self.approx_eval(x+self.dell)-self.approx_eval(x))/self.dell
             self.loss_summation.append((dNN - self.ode_analy(x))**2)
         return tf.sqrt(tf.reduce_mean(tf.abs(self.loss_summation)))
