@@ -10,39 +10,32 @@ Notes: Vectorize Everything (Numpy)
 
 class LossODE(object):
     
-    def __init__(self):
+    def __init__(self, f0 = 0):
         self.dell = np.sqrt(np.finfo(np.float32).eps)
-        self.loss_summation = []
+        self.initial = f0
     ### get different functions 
     ### MARK DEV: issue with 
     
-    def reset_loss(self):
-        '''
-        reset loss array
-        '''
-        self.loss_summation = []
-    
-    def approx_eval(self, subclassed_model, inputs, initial):
+    def approx_eval(self, subclassed_model, input):
         '''
         x*NN(x) + f_0
         '''
-        return subclassed_model(inputs) + initial
+        return subclassed_model(input) + self.initial
 
-    def ode_analy(self, inputs, funcKey = 'place_h'):
+    def ode_analy(self, input, funcKey = 'place_h'):
         '''
         Evaluate analytical function based on funcKey
         MARK DEV: Probably a better way to do this: cls.dict_of_functs
         '''
         if funcKey == 'place_h':
-            return 2*(inputs)
+            return 2*input
     
-    def custom_loss(self, inputs):
-        '''
-        MARK DEV: need this for 2d funcs via vectorized (tensorized) TF logic
-        '''
-        for x in inputs:
-        # for x in np.linspace(-1,1,10):
-            dNN = (self.approx_eval(x+self.dell)-self.approx_eval(x))/self.dell
-            self.loss_summation.append((dNN - self.ode_analy(x))**2)
-        return tf.sqrt(tf.reduce_mean(tf.abs(self.loss_summation)))
-        
+    def custom_de_loss(self, inputs, model):
+        # Vectorized computation of dNN
+        dNN = (self.approx_eval(model, inputs + self.dell) - self.approx_eval(model, inputs)) / self.dell
+
+        # Vectorized computation of the loss
+        loss = tf.square(dNN - self.ode_analy(inputs))
+
+        # Mean of the loss
+        return tf.sqrt(tf.reduce_mean(loss))
