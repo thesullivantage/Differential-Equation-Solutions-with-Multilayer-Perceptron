@@ -7,6 +7,9 @@ from . import loss
     
     
 class Train(object):
+    '''
+    Training class; executed in jupyter notebook/training script, for now
+    '''
     def __init__(self, opt='SGD'):
         loss = loss.LossODE()
         pass
