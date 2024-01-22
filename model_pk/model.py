@@ -37,7 +37,7 @@ class FeedForward(keras.layers.Layer):
 
     def call(self, inputs):
         if not self.logit_output:
-            return self.activation(tf.matmul(self.w, inputs) + self.b)
+            return self.activation(tf.matmul(inputs, self.w) + self.b)
         else:
             return tf.matmul(inputs, self.w) + self.b
         

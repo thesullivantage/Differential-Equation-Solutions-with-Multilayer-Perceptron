@@ -34,11 +34,11 @@ for epoch in range(1, num_epochs+1):
     ### increment squared loss over entire epoch (dataset)
     epoch_total_loss = 0
     for input_example in inputs:
-        # input_example_reshaped = tf.reshape(input_example, (1, phys_dimension))
+        input_example_reshaped = tf.reshape(input_example, (1, phys_dimension))
 
         with tf.GradientTape() as tape:
             # Compute the loss for the current input example (squared error)
-            loss_curr = loss_fn.compute_loss_element(mlp, input_example)
+            loss_curr = loss_fn.compute_loss_element(mlp, input_example_reshaped)
             epoch_total_loss += loss_curr
         # Compute gradients and update model parameters
         gradients = tape.gradient(loss_curr, mlp.trainable_variables)
