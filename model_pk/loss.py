@@ -31,33 +31,18 @@ class LossODE(object):
             return 2*input
     
     def custom_de_loss(self, inputs, model):
-        # Vectorized computation of dNN ###
-        dNN = (self.approx_eval(model, inputs + self.dell) - self.approx_eval(model, inputs)) / self.dell
-
-        # Vectorized computation of the loss
-        loss = tf.square(dNN - self.ode_analy(inputs))
-
-        # Mean of the loss
-        return tf.sqrt(tf.reduce_mean(loss))
-    
-    # # Custom loss function to approximate the derivatives
-    # def custom_loss_old(self, inputs, model):
-    #     summation = []
-    #     for x in np.linspace(-1,1,10):
-    #         dNN = (self.approx_eval(model, x+self.dell)-self.approx_eval(model, x))/self.dell
-    #         summation.append((dNN - self.ode_analy(x))**2)
-    #     return tf.sqrt(tf.reduce_mean(tf.abs(summation)))
-
-    def custom_de_loss(self, inputs, model):
         def compute_loss_element(x):
             '''
+            ### MARK DEV: PDE: multi-var tuple instead of x
             Function to be mapped to each element of tensor of inputs to get loss element.
             '''
-            dNN = (self.approx_eval(model, x + self.dell) - self.approx_eval(model, x)) / self.dell
-            return tf.square(dNN - self.ode_analy(x))
+            dNNdt = (self.approx_eval(model, x + self.dell) - self.approx_eval(model, x)) / self.dell
+            return tf.math.square(dNNdt - self.ode_analy(x))
 
         # Apply the modular (map) function to each element of the input tensor
+        ### MARK DEV: for multi-var tuple (PDE), map across multiple axes
         loss_elements = tf.map_fn(compute_loss_element, inputs, dtype=tf.float32)
 
         # Compute the mean of the loss elements
-        return tf.sqrt(tf.reduce_mean(tf.abs(loss_elements)))
+        # return tf.sqrt(tf.reduce_mean(tf.abs(loss_elements)))
+        return tf.math.sqrt(tf.math.reduce_sum(tf.abs(loss_elements)))
