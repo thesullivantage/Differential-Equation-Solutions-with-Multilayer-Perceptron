@@ -34,15 +34,15 @@ class LossODE(object):
             return 2*input
         
     def compute_loss_element(self, model, x):
-            '''
-            ### MARK DEV: PDE: multi-var tuple instead of x; pass dimensionality too
-            Function to be mapped to each element of tensor of inputs to get loss element.
-            '''
-            ### with batch size of 1 (which is thus far mandatory) returns only the value
-            val = tf.squeeze(x, axis=0) 
-            ### derivative (via linearization): del_val approach 0
-            NN_deriv = (self.approx_eval(model, val + self.dell) - self.approx_eval(model, val)) / self.dell
-            return tf.math.square(NN_deriv - self.ode_analy(val))
+        '''
+        ### MARK DEV: PDE: multi-var tuple instead of x; pass dimensionality too
+        Function to be mapped to each element of tensor of inputs to get loss element.
+        '''
+        ### with batch size of 1 (which is thus far mandatory) returns only the value
+        val = tf.squeeze(x, axis=0) 
+        ### derivative (via linearization): del_val approach 0
+        NN_deriv = (self.approx_eval(model, val + self.dell) - self.approx_eval(model, val)) / self.dell
+        return tf.math.square(NN_deriv - self.ode_analy(val))
     
     # def custom_de_loss(self, inputs, model):
     #     def compute_loss_element(x):
