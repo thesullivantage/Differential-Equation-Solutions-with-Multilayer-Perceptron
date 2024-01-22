@@ -40,6 +40,9 @@ class LossODE(object):
         '''
         ### with batch size of 1 (which is thus far mandatory) returns only the value
         val = tf.squeeze(x, axis=0) 
+        print('VAL HERE: ', val)
         ### derivative (via linearization): del_val approach 0
         NN_deriv = (self.approx_eval(model, val + self.dell) - self.approx_eval(model, val)) / self.dell
+        loss_sub = NN_deriv - self.ode_analy(val)
+        print('Differential', loss_sub)
         return tf.math.square(NN_deriv - self.ode_analy(val))
