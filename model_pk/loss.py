@@ -9,11 +9,14 @@ Notes: Vectorize Everything (Numpy)
 
 class LossODE(object):
     
-    def __init__(self, f0 = 0):
+    def __init__(self, f0 = 0, dell = None):
         '''
         MARK DEV (PDE): need multi-dim. BC in addition to IC
         '''
-        self.dell = np.sqrt(np.finfo(np.float32).eps)
+        if dell is None:
+            self.dell = np.sqrt(np.finfo(np.float32).eps)
+        else: 
+            self.dell = dell
         self.initial = f0
     ### get different functions 
     ### MARK DEV: issue with 
