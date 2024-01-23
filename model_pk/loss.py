@@ -28,13 +28,13 @@ class LossODE(object):
         '''
         return input*model(input) + self.initial
 
-    def ode_analy(self, input, funcKey = 'place_h'):
+    def ode_analy(self, input, funcKey = 'first_ord_sample'):
         '''
         Evaluate analytical function based on funcKey
         MARK DEV: Probably a better way to do this: cls.dict_of_functs
         '''
-        if funcKey == 'place_h':
-            return 2*input + self.initial
+        if funcKey == 'first_ord_sample':
+            return 2*input
         
     def compute_loss_element(self, model, x):
         '''
