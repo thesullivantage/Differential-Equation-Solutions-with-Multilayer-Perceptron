@@ -44,5 +44,4 @@ class LossODE(object):
         ### derivative (via linearization): del_val approach 0
         NN_deriv = (self.approx_eval(model, x + self.dell) - self.approx_eval(model, x)) / self.dell
         loss_sub = NN_deriv - self.ode_analy(x)
-        print('Differential', loss_sub)
         return tf.math.square(NN_deriv - self.ode_analy(x))
