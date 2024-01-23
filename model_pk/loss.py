@@ -26,7 +26,7 @@ class LossODE(object):
         MARK DEV: DIMENSION FINE
         x*NN(x) + f_0
         '''
-        return model(input) + self.initial
+        return input*model(input) + self.initial
 
     def ode_analy(self, input, funcKey = 'place_h'):
         '''
