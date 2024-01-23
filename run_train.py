@@ -26,26 +26,32 @@ delta = 0.1  # Step size
 inputs = tf.reshape(tf.range(start, limit, delta, dtype=tf.float32), (-1, 1))
 
 # Training loop
-num_epochs = 25  # Define the number of epochs
+
+### Trained using SGD optimization (MSE), without replacement
+# Training loop
+
+num_epochs = 20  # Define the number of epochs
 
 ### Trained using SGD optimization (MSE), without replacement
 ### n (dim. inputs) gradient updates
 for epoch in range(1, num_epochs+1):
     ### increment squared loss over entire epoch (dataset)
     epoch_total_loss = 0
-    for input_example in inputs:
-        input_example_reshaped = tf.reshape(input_example, (1, phys_dimension))
+    with tf.GradientTape() as tape:
 
-        with tf.GradientTape() as tape:
+        for input_example in inputs:
+        # input_example_reshaped = tf.reshape(input_example, (1, phys_dimension))input_example_reshaped = tf.reshape(input_example, (1,))
+            input_example_reshaped = tf.reshape(input_example, (1,1))
             # Compute the loss for the current input example (squared error)
             loss_curr = loss_fn.compute_loss_element(mlp, input_example_reshaped)
             epoch_total_loss += loss_curr
         # Compute gradients and update model parameters
-        gradients = tape.gradient(loss_curr, mlp.trainable_variables)
-        optimizer.apply_gradients(zip(gradients, mlp.trainable_variables))
+        mse_epoch = tf.math.sqrt(tf.reduce_mean(epoch_total_loss))
         
-    epoch_avg_loss = epoch_total_loss / tf.shape(inputs)[0]
-    print(f'Epoch {epoch} Average Loss: ', epoch_avg_loss)
+    gradients = tape.gradient(mse_epoch, mlp.trainable_variables)
+    optimizer.apply_gradients(zip(gradients, mlp.trainable_variables))
+    epoch_avg_loss = epoch_total_loss / tf.cast(inputs.shape[0], tf.float32)
+    print(f'Epoch {epoch} Average Loss: ', mse_epoch)
 
 ### OLD
 # for epoch in range(num_epochs):
