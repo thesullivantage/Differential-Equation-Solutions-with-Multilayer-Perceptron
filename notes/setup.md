@@ -1,4 +1,4 @@
-# Training Experimentation Reccomendations
+# Training Experimentation Workflow Reccomendations
 
 1. Upload MLP_DE_collab.ipynb to Google Colab. Free-tier resources should suffice for a relatively shallow MLP model.
 
