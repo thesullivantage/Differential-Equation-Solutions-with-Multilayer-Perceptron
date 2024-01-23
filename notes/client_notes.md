@@ -14,9 +14,8 @@
 - Up to this point, I have been implementing SGD: runninng gradient descent for every sample (batch size: 1).
 - Training is currently not converging. __ Squared error values (using SGD; not computing mean) values appear consistent with the x-values themselves.__.
 - Some thoughts on that:
-    - Epsilon may be too small.
-      - From the [numpy docs](https://numpy.org/doc/stable/reference/generated/numpy.finfo.html): it is currently the 64-bit "difference between 1.0 and the next smallest representable float larger than 1.0."
-      - But, this did not seem to affect the results of one other analyst who's tutorial I read through, which is where I lifted the loss implementation from.
+    - Changing epsilon from default value to larger number did not help convergence.
+      - Default value: from the [numpy docs](https://numpy.org/doc/stable/reference/generated/numpy.finfo.html): it is currently the 64-bit "difference between 1.0 and the next smallest representable float larger than 1.0."
   - For modifying optimization strategy - could try:
     - Adam optimization using a batch strategy (gradient descent run after one full pass through data - per epoch).
     - Modified SGD using a minibatches of data __to get MSE instead of individual squared error values__.
