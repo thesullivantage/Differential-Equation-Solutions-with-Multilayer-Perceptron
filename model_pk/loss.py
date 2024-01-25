@@ -44,3 +44,10 @@ class LossODE(object):
         ### with batch size of 1 (which is thus far mandatory) returns only the value
         NN_deriv = (self.approx_eval(model, x + self.dell) - self.approx_eval(model, x)) / self.dell
         return tf.math.square(NN_deriv - self.ode_analy(x))
+
+    def mse_all_batch(self, model, inputs):
+        summation = []
+        for i in inputs:
+            NN_deriv = (self.approx_eval(model, i + self.dell) - self.approx_eval(model, i)) / self.dell
+            summation.append(tf.math.square(NN_deriv - self.ode_analy(i)))
+        return tf.reduce_mean(tf.abs(summation))

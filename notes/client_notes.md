@@ -11,7 +11,8 @@
 - The loss (objective) function relying mainly upon the numerical calculation of function derivative increases the complexity of this challenge.
 
 ## Training Notes - Preliminary
-- Training needs to take place on the unit interval (0, 1) for stability of gradient descent.
+- Training needs to take place on the normalized interval (0, 1) for stability of gradient descent.
+
 - Up to this point, I have been implementing SGD: runninng gradient descent for every sample (batch size: 1).
 - Training is currently not converging. __ Squared error values (using SGD; not computing mean) values appear consistent with the x-values themselves.__.
 - Some thoughts on that:
