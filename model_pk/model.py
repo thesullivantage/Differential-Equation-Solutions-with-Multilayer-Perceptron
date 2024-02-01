@@ -25,8 +25,8 @@ class FeedForward(keras.layers.Layer):
             # ReLu activation function for hidden layers
             self.activation = tf.nn.relu
         else:
-            # Sigmoid activation function for hidden layers
-            self.activation = tf.nn.sigmoid
+            # linear (unbounded) activation function for output layer
+            self.activation = tf.nn.linear
     
     def build(self, input_shape):
         '''
