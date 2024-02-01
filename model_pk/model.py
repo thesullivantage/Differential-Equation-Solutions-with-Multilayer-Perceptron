@@ -26,7 +26,7 @@ class FeedForward(keras.layers.Layer):
             self.activation = tf.nn.relu
         else:
             # linear (unbounded) activation function for output layer
-            self.activation = tf.nn.linear
+            self.activation = tf.keras.activations.linear
     
     def build(self, input_shape):
         '''
